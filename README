@@ -1,0 +1,6 @@
+Algoritmanın Özeti:
+
+Server Başlatıldığında sinyal işleyicisi tanımlanır.
+Server sürekli olarak sinyal bekler(pause()).
+Client, her karakteri bitlerine ayırır ve her biti sırayla SIGUSR1 ve SIGUSR2 ile gönderir.
+Server, her bir sinyali alır, bitlerini birleştirir ve stringi tamamladığında ekrana yazdırır.
