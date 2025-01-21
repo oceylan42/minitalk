@@ -3,7 +3,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
+
 
 #define MAX_LENGHT 1024
 
@@ -25,14 +25,31 @@ void handle_signal(int sig)
 
     if(g_string[index - 1] == '\0' || index >= MAX_LENGHT)
     {
-        WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), g_string, strlen(g_string), NULL, NULL);
-        index = 0;
+        WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), g_string, strlen(g_string), NULL, NULL); //Ekrana yazdırır
+        index = 0; //Stringi sıfırla
 
     }
 }
 
 int main()
 {
-    pid_t pid = getpid();
+    DWORD pid = getpid();
+    printf("Server PID: %d\n", pid);
 
+    // Signal handler ları ayarla
+    struct sigaction sa;
+    {
+        sa.sa_handler = &handle_signal;
+        sa.sa_flags = 0;
+        sigemptyset(&sa.sa_mask);
+        sigaction(SIGUSR1, &sa, NULL);
+        sigaction(SIGUSR2, &sa, NULL);
+    }
+
+    //Sinyalleri bekleyelim 
+    while(1)
+    {
+        pause(); // Sinyal bekle
+    }
+    return(0);
 }
